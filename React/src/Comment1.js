@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from "axios";
 import logo from "./GitGoing.jpeg";
+import Comment3 from './Comment3'
+
 
 class Comment1 extends React.Component {
 
@@ -73,7 +75,7 @@ class Comment1 extends React.Component {
 
                                         <p style={{ margin: 1 }}>{line}</p>
                                         {"\n"}
-                                        <p style={commentStyle}> this will be a comment box </p>
+                                        <Comment3 />
                                     </div>
 
                                 }
