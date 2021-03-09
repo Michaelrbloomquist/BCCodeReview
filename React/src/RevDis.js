@@ -58,7 +58,6 @@ class RevDis extends React.Component {
             await axios.get("https://www.4424081204.com:1111/REVIEW/" + hld, {
                 headers: {accesstoken: this.state.CookieSave}
             }).then(res => {
-                //console.log("here", res)
                 hld2 = res.data;
                 hld2 = hld2.toString().split("$#BREAKBREAK")
                 console.log(res.data)
@@ -127,21 +126,16 @@ class RevDis extends React.Component {
         await axios.get("https://www.4424081204.com:1111/WORKS_ON_REVIEWS/" + this.state.Uname, {
             headers: {accesstoken: this.state.CookieSave}
         }).then(res => {
-            //console.log(this.state.Uname)
             this.setState({REVIDLST: res.data})
             var hldLST = []
-            //console.log(res.data.length)
             for (var i = 0; i < res.data.length; i++) {
                 const x = i
-                //console.log(res.data[i].REVIDREF)
                 hldLST[x] = res.data[x].REVIDREF
-                //console.log(hldLST[i])
             }
             this.setState({
                 RevIDLST: hldLST
             })
             this.getReview()
-            //console.log(this.state.RevIDLST)
         })
     }
 
