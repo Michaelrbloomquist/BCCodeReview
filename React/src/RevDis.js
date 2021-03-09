@@ -137,6 +137,7 @@ class RevDis extends React.Component {
             })
             this.getReview()
         })
+        this.loadCollab();
     }
 
     confirmDel = async () => {
