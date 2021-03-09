@@ -22,10 +22,22 @@ class RevDis extends React.Component {
             fname: '',
             step: -1,
             CookieSave: '',
+            cHld: [],
+            isOpen: false,
             fileContent: ''
-
         };
         this.handleiUserNChange = this.handleiUserNChange.bind(this);
+    }
+
+    openPopup = () => {
+        this.setState({
+            isOpen: true
+        });
+    }
+    closePopup = () => {
+        this.setState({
+            isOpen: false
+        });
     }
 
     handleiUserNChange(evt) {
@@ -57,6 +69,20 @@ class RevDis extends React.Component {
                 })
             })
         }
+    }
+
+    loadCollab = async () => {
+        await axios.get("http://localhost:3002/WORKS_ON_REVIEWS/", {
+            headers: {accesstoken: this.state.CookieSave, test: this.state.routePara}
+        }).then(res => {
+            var tHld = []
+            for(var i = 0; i < res.data.length; i++){
+                tHld[i] = res.data[i].UNameW
+            }
+            this.setState({
+                cHld: tHld
+            })
+        })
     }
 
     invitingUser = async () => {
@@ -119,6 +145,19 @@ class RevDis extends React.Component {
         })
     }
 
+    confirmDel = async () => {
+        await axios.delete("http://localhost:3002/WORKS_ON_REVIEWS/" + this.state.routePara, {
+            headers: {accesstoken: this.state.CookieSave}
+        })
+        await axios.delete("http://localhost:3002/INVITES/" + this.state.routePara, {
+            headers: {accesstoken: this.state.CookieSave}
+        })
+        await axios.delete("http://localhost:3002/REVIEW/" + this.state.routePara, {
+            headers: {accesstoken: this.state.CookieSave}
+        })
+        return window.location = "/ProjectsTest"
+    }
+
     updatingReview = async () => {
         this.setState({
             step: 3
@@ -150,6 +189,12 @@ class RevDis extends React.Component {
 
     render() {
 
+        let popup = null;
+        if(this.state.isOpen){
+            popup = (<Popup  message={<div><p>This is permanent, and cannot be reversed</p><input type='submit' className='submit' value='Are you sure?' onClick={this.confirmDel}/></div>} closeMe={this.closePopup}/>);
+        }
+
+        const items = this.state.cHld.map((item, i) =><div key = {i}>{item}</div>)
 
         switch (this.state.authState) {
             case ('loading'):
@@ -159,6 +204,9 @@ class RevDis extends React.Component {
                     <div className='grad1'>
                         <NavBar/>
                         <br></br>
+                        <div className = 'inline'>
+                            <div>Collaborators: {items}</div>
+                        </div>
                         <div className='container'>
                             <input type="submit" className='submit' value="Invite a User to Review"
                                    onClick={this.invitingUser}/>
@@ -190,6 +238,8 @@ class RevDis extends React.Component {
                             <p style={{whiteSpace: 'pre'}}>{this.state.gotRev}</p>
                         </div>
                         <br></br>
+                        <input type='submit' className='submit' value="Delete Review" onClick={this.openPopup}/>
+                        {popup}
                     </div>
                 );
             case ('unauthorized'):
