@@ -21,8 +21,11 @@ class ReviewCreator extends React.Component {
             Uname: '',
             newCommID: '',
             newRevID: '',
-            CookieSave: ''
+            CookieSave: '',
+            RevName: ''
         };
+
+        this.setProjName = this.setProjName.bind(this);
     }
 
     componentDidMount = async () => {
@@ -123,7 +126,6 @@ class ReviewCreator extends React.Component {
     }
 
 
-
     showFile() {
 
         const reader = new FileReader();
@@ -148,6 +150,35 @@ class ReviewCreator extends React.Component {
         this.setState({diffList: []})
     }
 
+    setProjName(evt){
+        this.setState({
+            RevName: evt.target.value,
+        });
+    }
+
+    popDB = async () => {
+        await axios.post("https://www.4424081204.com:1111/REVIEW", {
+            REVNAME: this.state.RevName,
+            CurrRev: this.state.diffText,
+            DT: this.state.curTime,
+            FName: this.state.fileName
+        }, {headers: {accesstoken: this.state.CookieSave}}).then(function (res) {
+            console.log("why")
+        })
+        await axios.get("https://www.4424081204.com:1111/REVIEW", {
+            headers: {accesstoken: this.state.CookieSave}
+        }).then(res => {
+            //console.log("here is res", res)
+            this.setState({newRevID: res.data})
+        })
+        await axios.post("https://www.4424081204.com:1111/WORKS_ON_REVIEWS", {
+            REVIDREF: this.state.newRevID,
+            UNameW: this.state.Uname
+        }, {headers: {accesstoken: this.state.CookieSave}}).then(function (res) {
+            //console.log("here2");
+        })
+    }
+
     render() {
 
         return (
@@ -156,19 +187,28 @@ class ReviewCreator extends React.Component {
                 <NavBar/>
                 <div className="ReviewCreator">
                     {this.props.children}
-                    <button onClick={(e) => this.handleClick1()}>
+                    <button style = {{marginLeft: 20}} onClick={(e) => this.handleClick1()}>
                         Set minimal diff
                     </button>
                     <button onClick={(e) => this.handleClick2()}>
                         Set full diff
                     </button>
                     <br/>
-                    <button onClick={(e) => this.createDiff()}>
+                    <button style = {{marginLeft: 20}} onClick={(e) => this.createDiff()}>
                         Create Diff
                     </button>
                     <button onClick={(e) => this.clearDiffs()}>
                         Clear Diffs
                     </button>
+					<br/>
+					<form>
+						<p> Enter a project name: </p>
+						<input
+							type='Text'
+							onChange={this.setProjName}
+						/>
+					</form>
+                    <input type="submit" className="submit" value="Create New Review" onClick={this.popDB}/>
                     <div style={{padding: 10, marginBottom: 300}}>
                         {this.state.diffList}
                     </div>

@@ -57,7 +57,7 @@ class Project2 extends React.Component {
     })
   }
   
-  showFile = async (e) => {
+  setFile = async (e) => {
     e.preventDefault()
     const reader = new FileReader()
     reader.onload = async (e) => { 
@@ -250,7 +250,7 @@ class Project2 extends React.Component {
 
             {this.state.step === 0 &&    
             <div>     
-              <input type="file" onChange={(e) => this.showFile(e)} />
+              <input type="file" onChange={(e) => this.setFile(e)} />
               <br></br>
               <input type = "text" name ="REVNAME" placeholder="Enter a name for your Review" value = {this.state.RevName} onChange={this.handleRevName}/>
               <br></br>
