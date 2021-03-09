@@ -221,7 +221,7 @@ class Project2 extends React.Component {
   }
 
   creProjButts() {
-    const items = this.state.RevIDLST.map((item, i) =><Link key={i} to ={'ProjectsTest/' + item}><input key = {i} type="submit" className="submit" value={"Project " + item} onClick={this.getReview.bind(this, (item.valueOf(item)))}/></Link>)
+    const items = this.state.RevIDLST.map((item, i) =><Link key={i} to ={'Projects/' + item}><input key = {i} type="submit" className="submit" value={"Project " + item} onClick={this.getReview.bind(this, (item.valueOf(item)))}/></Link>)
     //console.log(this.state.RevIDLST)
     return items
   }
