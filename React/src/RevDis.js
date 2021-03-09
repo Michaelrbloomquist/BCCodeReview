@@ -111,7 +111,6 @@ class RevDis extends React.Component {
             })
             this.getReview()
         })
-        this.loadCollab();
     }
 
     updatingReview = async () => {
