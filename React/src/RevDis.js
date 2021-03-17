@@ -105,6 +105,34 @@ class RevDis extends React.Component {
     }
 
     inviteUser = async () => {
+        nviteUser = async (iUserN) => {
+            await axios.get("https://www.4424081204.com:1111/INVITES/"+ iUserN, {
+                headers: {accesstoken: this.state.CookieSave, RID: this.state.revID}
+            }).then(res => {    
+                var hldLST = []
+                var hldLST2 = []
+                var hldProjNames = []
+                var hldDT = []
+                var c = 0
+                for(var i = 0; i<res.data.length; i++){
+                  const x = i
+                  if(res.data[x].ACCEPTED === 1){
+                    hldDT[x] = res.data[x].DT 
+                    hldProjNames[x] = res.data[x].ProjName
+                    hldLST[x] = res.data[x].IREVID
+                    hldLST2[x] = res.data[x].FUNAME
+                    c++
+                  }
+                }
+                this.setState({
+                  invProjName: hldProjNames,
+                  invDT: hldDT,
+                  invLST: hldLST,
+                  invNum: c,
+                  invULST: hldLST2
+                })
+              })
+            }
         await axios.post("https://www.4424081204.com:1111/INVITES/", {
             IREVID: this.state.revID,
             IUNAME: this.state.iUserN,
